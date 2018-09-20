@@ -129,6 +129,7 @@ screen -S minecraft java -jar $TYPE-$VERSION.jar nogui
 
 EOF
 
+chmod +x /home/"$USERNAME"/start.sh
 chown -R "$USERNAME":"$USERNAME" /home/"$USERNAME"
 
 echo -e "\n---------------------------------------------------------------------------------"
