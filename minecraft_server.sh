@@ -40,7 +40,7 @@ if [ $? -ne 0 ]; then
 fi
 
 USERNAME=""
-while [ -z "$USERNAME" ]; do
+while [ -z "$USERNAME" ] || [ "$USERNAME" == "root" ]; do
 	echo -e "---------------------------------------------------------------------------------\n"
 	echo "Please insert your desired username that is used to manage the Minecraft server."
 	echo -e "The server will get created in the home directory of the user entered.\n"
