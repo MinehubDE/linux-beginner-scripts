@@ -68,9 +68,10 @@ fi
 echo -e "\n---------------------------------------------------------------------------------\n"
 
 echo -e "What Software should the server run on?\n"
-echo "[1] SPIGOT"
-echo "[2] CRAFTBUKKIT"
-echo "[3] PAPERSPIGOT"
+echo "[1] VANILLA"
+echo "[2] SPIGOT"
+echo "[3] CRAFTBUKKIT"
+echo "[4] PAPERSPIGOT"
 
 echo ""
 
@@ -79,14 +80,18 @@ while [ $CASE -ne 0 ]; do
 	read -r -p "Please enter the number of your choice: " TYPE_INT
 	case $TYPE_INT in
 		1)
-		TYPE="spigot"
+		TYPE="minecraft_server"
 		CASE=0
 		;;
 		2)
-		TYPE="craftbukkit"
+		TYPE="spigot"
 		CASE=0
 		;;
 		3)
+		TYPE="craftbukkit"
+		CASE=0
+		;;
+		4)
 		TYPE="paperspigot"
 		CASE=0
 		;;
@@ -120,7 +125,8 @@ while [ $CASE -ne 0 ]; do
 done
 
 rm -f /home/"$USERNAME"/*.jar
-wget -q https://yivesmirror.com/files/spigot/"$TYPE"-"$VERSION".jar -O /home/"$USERNAME"/"$TYPE"-"$VERSION".jar
+
+wget -q https://mirror.minehub.de/"$TYPE"-"$VERSION".jar -O /home/"$USERNAME"/"$TYPE"-"$VERSION".jar
 
 cat > /home/"$USERNAME"/start.sh << EOF
 #!/bin/bash
