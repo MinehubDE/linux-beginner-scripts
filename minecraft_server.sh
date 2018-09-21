@@ -10,7 +10,7 @@ if [ "$(id -u)" != "0" ]; then
 	exit 1
 fi
 
-DEPENDENCIES="screen openjdk-8-jre-headless"
+DEPENDENCIES="screen openjdk-8-jre-headless host"
 dpkg -s $DEPENDENCIES &>/dev/null
 if [ $? -ne 0 ]; then
 	echo -e "For Minecraft to work we need to install the following dependencies:\n"
@@ -21,7 +21,7 @@ if [ $? -ne 0 ]; then
 	read -r -p "Please insert 'YES' to allow the installation. Otherwise this script will exit here: " ANSWER
 	if [ "$ANSWER" == "YES" ]; then
 		apt-get update
-		apt-get -y install screen openjdk-8-jre-headless
+		apt-get -y install $DEPENDENCIES
 		if [ $? -ne 0 ]; then
 			echo -e "\n---------------------------------------------------------------------------------\n"
 			echo "Installation failed, trying to fix..."
@@ -124,9 +124,14 @@ while [ $CASE -ne 0 ]; do
         esac
 done
 
+echo -e "\n---------------------------------------------------------------------------------\n"
+echo "Your server is getting created... Please wait..."
+echo -e "\n---------------------------------------------------------------------------------\n"
+
 rm -f /home/"$USERNAME"/*.jar
 
 wget -q https://mirror.minehub.de/"$TYPE"-"$VERSION".jar -O /home/"$USERNAME"/"$TYPE"-"$VERSION".jar
+echo "eula=true" > /home/"$USERNAME"/eula.txt
 
 cat > /home/"$USERNAME"/start.sh << EOF
 #!/bin/bash
@@ -154,5 +159,21 @@ echo -e "\n---------------------------------------------------------------------
 
 echo "- Username: $USERNAME"
 echo "- Password: $PASSWORD_OUTPUT"
+
+echo -e "\n---------------------------------------------------------------------------------\n"
+
+echo "Then execute this command and the server will start:"
+echo -e "\n---------------------------------------------------------------------------------\n"
+
+echo "cd /home/"$USERNAME" && ./start.sh"
+
+echo -e "\n---------------------------------------------------------------------------------\n"
+
+IP=$(host myip.opendns.com resolver1.opendns.com | grep "myip.opendns.com has address" | awk '{ print $NF }')
+
+echo "Enter this address into your minecraft client and connect to the server:"
+echo -e "\n---------------------------------------------------------------------------------\n"
+
+echo "$IP:25565"
 
 echo -e "\n---------------------------------------------------------------------------------\n"
