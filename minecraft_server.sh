@@ -147,15 +147,12 @@ echo -e "\n---------------------------------------------------------------------
 echo "---------------------------------------------------------------------------------"
 echo -e "---------------------------------------------------------------------------------\n"
 
-if [ ! -z "$PASSWORD" ]; then
-	PASSWORD_SENTENCE="- Password: $PASSWORD"
-fi
+PASSWORD_OUTPUT=${PASSWORD:=Password for the user was not created with this script, so it existed before.}
+
 echo "Please connect via SSH (e.g. with Putty or another SSH client) using the following credentials:"
 echo -e "\n---------------------------------------------------------------------------------\n"
 
 echo "- Username: $USERNAME"
-if [ ! -z "$PASSWORD_SENTENCE" ]; then
-	echo $PASSWORD_SENTENCE
-fi
+echo "- Password: $PASSWORD_OUTPUT"
 
 echo -e "\n---------------------------------------------------------------------------------\n"
