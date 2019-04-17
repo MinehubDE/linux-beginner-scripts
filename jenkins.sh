@@ -18,6 +18,8 @@ if [ "$ANSWER" != "YES" ]; then
 	exit 1
 fi
 
+apt-get -y install apt-transport-https
+
 wget -q https://pkg.jenkins.io/debian/jenkins.io.key
 apt-key add jenkins.io.key && rm jenkins.io.key
 
