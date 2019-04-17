@@ -10,7 +10,7 @@ if [ "$(id -u)" != "0" ]; then
         exit 1
 fi
 
-DEPENDENCIES="host tar"
+DEPENDENCIES="host tar bzip2"
 dpkg -s $DEPENDENCIES &>/dev/null
 if [ $? -ne 0 ]; then
         echo -e "For this script and TeamSpeak to work we need to install the following dependencies:\n"
