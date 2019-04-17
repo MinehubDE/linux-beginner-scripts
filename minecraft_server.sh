@@ -10,7 +10,7 @@ if [ "$(id -u)" != "0" ]; then
 	exit 1
 fi
 
-DEPENDENCIES="screen openjdk-8-jre-headless wget host"
+DEPENDENCIES="ca-certificates screen openjdk-8-jre-headless wget host"
 dpkg -s $DEPENDENCIES &>/dev/null
 if [ $? -ne 0 ]; then
 	echo -e "For Minecraft to work we need to install the following dependencies:\n"
@@ -32,7 +32,7 @@ if [ $? -ne 0 ]; then
 				echo "Could not install dependencies. Will exit now."
 				exit 1
 			fi
-		fi	
+		fi
 	else
 		echo "Your answer was \"$ANSWER\" and not YES. So this script will exit now."
 		exit 1
@@ -112,8 +112,8 @@ while [ $CASE -ne 0 ]; do
                 1)
                 VERSION="1.8.8"
                 CASE=0
-                ;; 
-                2)    
+                ;;
+                2)
                 VERSION="1.12.2"
                 CASE=0
                 ;;
@@ -130,7 +130,7 @@ echo -e "\n---------------------------------------------------------------------
 
 rm -f /home/"$USERNAME"/*.jar
 
-wget -q https://mirror.minehub.de/"$TYPE"-"$VERSION".jar -O /home/"$USERNAME"/"$TYPE"-"$VERSION".jar
+wget -q https://minecraft-mirror.io/"$TYPE"-"$VERSION".jar -O /home/"$USERNAME"/"$TYPE"-"$VERSION".jar
 echo "eula=true" > /home/"$USERNAME"/eula.txt
 
 cat > /home/"$USERNAME"/start.sh << EOF
