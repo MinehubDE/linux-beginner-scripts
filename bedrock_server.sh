@@ -133,6 +133,8 @@ EOF
 		wget -q https://altay.minehub.de/job/Altay/lastSuccessfulBuild/artifact/plugins/Altay/*zip*/Altay.zip -O /tmp/altay.zip
 		unzip -qq -o /tmp/altay.zip -d /tmp/altay
 		mv /tmp/altay/Altay/Altay*.phar /home/"$USERNAME"/"$TYPE".phar
+		wget -q https://raw.githubusercontent.com/TuranicTeam/Altay/master/resources/pocketmine.yml -O /home/"$USERNAME"/pocketmine.yml
+		sed -i "s/enable-dev-builds: false/enable-dev-builds: true/g" /home/"$USERNAME"/pocketmine.yml
 		cat > /home/"$USERNAME"/start.sh << EOF
 #!/bin/bash
 
