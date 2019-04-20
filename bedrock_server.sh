@@ -103,7 +103,7 @@ if [ $? -ne 0 ]; then
 			JAVA)
 			apt-get -y install openjdk-8-jre-headless
 			;;
-			BULLSHIT
+			BULLSHIT)
 			;;
 		esac
         else
@@ -119,7 +119,6 @@ echo -e "\n---------------------------------------------------------------------
 case $TYPE in
 	pocketmine)
 		rm -f /home/"$USERNAME"/*.phar
-		echo "eula=true" > /home/"$USERNAME"/eula.txt
 		wget -q https://jenkins.pmmp.io/job/PocketMine-MP/lastSuccessfulBuild/artifact/PocketMine-MP.phar -O /home/"$USERNAME"/"$TYPE".phar
 		cat > /home/"$USERNAME"/start.sh << EOF
 #!/bin/bash
@@ -130,7 +129,6 @@ EOF
 	;;
 	altay)
 		rm -f /home/"$USERNAME"/*.phar
-		echo "eula=true" > /home/"$USERNAME"/eula.txt
 		apt-get install -y unzip
 		wget -q https://altay.minehub.de/job/Altay/lastSuccessfulBuild/artifact/plugins/Altay/*zip*/Altay.zip -O /tmp/altay.zip
 		unzip /tmp/altay.zip -d /tmp/altay
@@ -144,7 +142,6 @@ EOF
 	;;
 	nukkit)
 		rm -f /home/"$USERNAME"/*.jar
-		echo "eula=true" > /home/"$USERNAME"/eula.txt
 		wget -q https://ci.nukkitx.com/job/NukkitX/job/Nukkit/job/master/lastSuccessfulBuild/artifact/target/nukkit-1.0-SNAPSHOT.jar -O /home/"$USERNAME"/"$TYPE".jar
 		cat > /home/"$USERNAME"/start.sh << EOF
 #!/bin/bash
@@ -158,6 +155,8 @@ EOF
 	;;
 esac
 
+echo "eula=true" > /home/"$USERNAME"/eula.txt
+echo "server-port=19132" > /home/"$USERNAME"/server.properties
 chmod +x /home/"$USERNAME"/start.sh
 chown -R "$USERNAME":"$USERNAME" /home/"$USERNAME"
 
