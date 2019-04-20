@@ -145,6 +145,7 @@ EOF
 	nukkit)
 		rm -f /home/"$USERNAME"/*.jar
 		wget -q https://ci.nukkitx.com/job/NukkitX/job/Nukkit/job/master/lastSuccessfulBuild/artifact/target/nukkit-1.0-SNAPSHOT.jar -O /home/"$USERNAME"/"$TYPE".jar
+		wget -q https://raw.githubusercontent.com/Nukkit/Languages/master/eng/nukkit.yml -O /home/"$USERNAME"/nukkit.yml
 		cat > /home/"$USERNAME"/start.sh << EOF
 #!/bin/bash
 
