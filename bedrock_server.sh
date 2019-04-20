@@ -131,7 +131,7 @@ EOF
 		rm -f /home/"$USERNAME"/*.phar
 		apt-get install -y unzip
 		wget -q https://altay.minehub.de/job/Altay/lastSuccessfulBuild/artifact/plugins/Altay/*zip*/Altay.zip -O /tmp/altay.zip
-		unzip /tmp/altay.zip -d /tmp/altay
+		unzip -qq -o /tmp/altay.zip -d /tmp/altay
 		mv /tmp/altay/Altay/Altay*.phar /home/"$USERNAME"/"$TYPE".phar
 		cat > /home/"$USERNAME"/start.sh << EOF
 #!/bin/bash
