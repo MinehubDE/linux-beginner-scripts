@@ -94,23 +94,26 @@ if [ $? -ne 0 ]; then
                                 exit 1
                         fi
                 fi
-		case $EXTRA_DEPENDENCIES in
-			PHP)
-			wget -q https://jenkins.pmmp.io/job/PHP-7.2-Linux-x86_64/lastSuccessfulBuild/artifact/PHP_Linux-x86_64.tar.gz -O /tmp/PHP.tar.gz
-			tar xzf /tmp/PHP.tar.gz -C /usr/local/lib/
-			ln -s /usr/local/lib/bin/php7/bin/php /usr/local/bin/php
-			;;
-			JAVA)
-			apt-get -y install openjdk-8-jre-headless
-			;;
-			BULLSHIT)
-			;;
-		esac
         else
                 echo "Your answer was \"$ANSWER\" and not YES. So this script will exit now."
                 exit 1
         fi
 fi
+
+case $EXTRA_DEPENDENCIES in
+        PHP)
+	if [ ! -f /usr/local/bin/php ]; then
+	        wget -q https://jenkins.pmmp.io/job/PHP-7.2-Linux-x86_64/lastSuccessfulBuild/artifact/PHP_Linux-x86_64.tar.gz -O /tmp/PHP.tar.gz
+	        tar xzf /tmp/PHP.tar.gz -C /usr/local/lib/
+	        ln -s /usr/local/lib/bin/php7/bin/php /usr/local/bin/php
+	fi
+        ;;
+        JAVA)
+        apt-get -y install openjdk-8-jre-headless
+        ;;
+        BULLSHIT)
+	;;
+esac
 
 echo -e "\n---------------------------------------------------------------------------------\n"
 echo "Your server is getting created... Please wait..."
