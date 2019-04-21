@@ -114,9 +114,13 @@ case $EXTRA_DEPENDENCIES in
         BULLSHIT)
 		grep -q Debian /etc/*-release
 		if [ $? -eq 0 ]; then
-			echo 'deb http://ftp.debian.org/debian/ buster main' > /etc/apt/sources.list.d/buster.list
-			apt-get update
-			apt-get -y -t buster install libc6
+			dpkg -s libc6 | grep Version | sed 's/Version: //g' | grep "2.28-8"
+			if [ $? -ne 0 ]; then
+				echo 'deb http://ftp.debian.org/debian/ buster main' > /etc/apt/sources.list.d/buster.list
+				apt-get update
+				export DEBIAN_FRONTEND=noninteractive
+				apt-get -yq -t buster install libc6
+			fi
 		fi
 	;;
 esac
@@ -169,7 +173,7 @@ EOF
 		cat > /home/"$USERNAME"/start.sh << EOF
 #!/bin/bash
 
-screen -S mcpocket LD_LIBRARY_PATH=. ./bedrock_server
+screen -S mcpocket bash -c 'LD_LIBRARY_PATH=. ./bedrock_server'
 
 EOF
 	;;
