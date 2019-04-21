@@ -112,8 +112,12 @@ case $EXTRA_DEPENDENCIES in
         	apt-get -y install openjdk-8-jre-headless
         ;;
         BULLSHIT)
-		wget -q http://ftp.de.debian.org/debian/pool/main/g/glibc/libc6_2.28-8_arm64.deb -O /tmp/libc6.deb
-		dpkg -i /tmp/libc6.deb
+		grep -q Debian /etc/*-release
+		if [ $? -eq 0 ]; then
+			echo 'deb http://ftp.debian.org/debian/ buster main' > /etc/apt/sources.list.d/buster.list
+			apt-get update
+			apt-get -y -t buster install libc6
+		fi
 	;;
 esac
 
