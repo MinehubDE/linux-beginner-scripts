@@ -109,9 +109,11 @@ case $EXTRA_DEPENDENCIES in
 	fi
         ;;
         JAVA)
-        apt-get -y install openjdk-8-jre-headless
+        	apt-get -y install openjdk-8-jre-headless
         ;;
         BULLSHIT)
+		wget -q http://ftp.de.debian.org/debian/pool/main/g/glibc/libc6_2.28-8_arm64.deb -O /tmp/libc6.deb
+		dpkg -i /tmp/libc6.deb
 	;;
 esac
 
@@ -158,6 +160,14 @@ EOF
 	;;
 	bedrock)
 		rm -f /home/"$USERNAME"/bedrock_server
+		wget -q https://minecraft.azureedge.net/bin-linux/bedrock-server-1.10.0.7.zip -O /tmp/bedrock-server.zip
+		unzip -qq -o /tmp/bedrock-server.zip -d /home/"$USERNAME"/
+		cat > /home/"$USERNAME"/start.sh << EOF
+#!/bin/bash
+
+screen -S mcpocket LD_LIBRARY_PATH=. ./bedrock_server
+
+EOF
 	;;
 esac
 
