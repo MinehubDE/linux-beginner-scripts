@@ -12,7 +12,7 @@ If you have git installed, use
 
 otherwise download the zip package with 
 
-    apt-get install unzip
+    apt-get install wget unzip
     wget https://github.com/MinehubDE/linux-beginner-scripts/archive/master.zip && unzip master.zip && rm master.zip
 
 Go into the folder and execute the script of your choice, e.g.
