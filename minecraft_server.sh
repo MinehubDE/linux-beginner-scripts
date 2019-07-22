@@ -102,7 +102,7 @@ echo -e "Which Version would you like to use?\n"
 echo "[1] 1.8.8"
 echo "[2] 1.12.2"
 echo "[3] 1.13.2"
-echo "[4] 1.14"
+echo "[4] 1.14.4"
 
 echo ""
 
@@ -123,7 +123,7 @@ while [ $CASE -ne 0 ]; do
                 CASE=0
 		;;
 		4)
-		VERSION="1.14"
+		VERSION="1.14.4"
 		CASE=0
                 ;;
         esac
