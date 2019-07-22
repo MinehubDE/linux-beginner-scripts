@@ -109,9 +109,10 @@ case $EXTRA_DEPENDENCIES in
 	fi
         ;;
         JAVA)
-        	apt-get -y install openjdk-8-jre-headless
+        	apt-get -y install default-jre-headless
         ;;
         BULLSHIT)
+		apt-get -y install openssl "libstdc++6"
 		grep -q Debian /etc/*-release
 		if [ $? -eq 0 ]; then
 			dpkg -s libc6 | grep Version | sed 's/Version: //g' | grep "2.28-8"

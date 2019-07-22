@@ -30,7 +30,7 @@ if [ $? -ne 0 ]; then
 	echo "Some of your sources seem to have an error. Please fix them first."
 	exit 1
 fi
-apt-get -y install openjdk-8-jre-headless jenkins host
+apt-get -y install default-jre-headless jenkins host
 
 IP=$(host myip.opendns.com resolver1.opendns.com | grep "myip.opendns.com has address" | awk '{ print $NF }')
 

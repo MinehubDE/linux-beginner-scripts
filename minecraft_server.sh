@@ -10,7 +10,7 @@ if [ "$(id -u)" != "0" ]; then
 	exit 1
 fi
 
-DEPENDENCIES="ca-certificates screen openjdk-8-jre-headless wget host"
+DEPENDENCIES="ca-certificates screen default-jre-headless wget host"
 dpkg -s $DEPENDENCIES &>/dev/null
 if [ $? -ne 0 ]; then
 	echo -e "For Minecraft to work we need to install the following dependencies:\n"
