@@ -169,7 +169,7 @@ EOF
 	;;
 	bedrock)
 		rm -f /home/"$USERNAME"/bedrock_server
-		wget -q https://minecraft.azureedge.net/bin-linux/bedrock-server-1.12.0.28.zip -O /tmp/bedrock-server.zip
+		wget -q https://minecraft.azureedge.net/bin-linux/bedrock-server-1.12.1.1.zip -O /tmp/bedrock-server.zip
 		unzip -qq -o /tmp/bedrock-server.zip -d /home/"$USERNAME"/
 		cat > /home/"$USERNAME"/start.sh << EOF
 #!/bin/bash
