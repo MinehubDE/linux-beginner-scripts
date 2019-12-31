@@ -45,6 +45,14 @@ mysql -e "DROP DATABASE test" &>/dev/null
 mysql -e "FLUSH PRIVILEGES" &>/dev/null
 # Any subsequent tries to run queries this way will get access denied because lack of usr/pwd param
 
+read -r -p "Do you want the database to be publicly accessible? [YES/NO]" PUBLIC
+
+if [[ "$PUBLIC" =~ ^(YES|yes|y)$ ]]; then
+        echo "YES was not entered. Database will stay only locally accessible."
+else
+	sed -i 's/^bind-address.*/#bind-address = 127.0.0.1/' /etc/mysql/mariadb.conf.d/50-server.cnf
+fi
+
 echo -e "\n---------------------------------------------------------------------------------\n"
 echo "DONE. You can now type 'mysql' as root without any password and start using your database server!"
 echo -e "\n---------------------------------------------------------------------------------\n"
