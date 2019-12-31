@@ -126,6 +126,7 @@ while [ $CASE -ne 0 ]; do
 		4)
 		VERSION="1.14.4"
 		CASE=0
+                ;;
 		5)
 		VERSION="1.15.1"
 		CASE=0
