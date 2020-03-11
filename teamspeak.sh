@@ -10,7 +10,7 @@ if [ "$(id -u)" != "0" ]; then
         exit 1
 fi
 
-DEPENDENCIES="host tar bzip2"
+DEPENDENCIES="host tar bzip2 wget"
 dpkg -s $DEPENDENCIES &>/dev/null
 if [ $? -ne 0 ]; then
         echo -e "For this script and TeamSpeak to work we need to install the following dependencies:\n"
@@ -70,8 +70,7 @@ echo -e "\n---------------------------------------------------------------------
 echo "TeamSpeak is getting installed... Please wait..."
 echo -e "\n---------------------------------------------------------------------------------\n"
 
-LATEST_VERSION=$(curl -s http://dl.4players.de/ts/releases/ | sed 's/.*a href="//g' |sed 's/\/".*//g' | grep '^[0-9]' | tail --lines=1)
-URL="http://dl.4players.de/ts/releases/$LATEST_VERSION/teamspeak3-server_linux_amd64-$LATEST_VERSION.tar.bz2"
+URL=$(curl -s https://www.teamspeak.com/de/downloads/#server | grep "Download" | grep "server_linux_amd64" | sed 's/.*href="//' | sed 's/">.*//')
 
 wget -q "$URL" -O teamspeak.tar.bz2
 tar xjf teamspeak.tar.bz2 -C /home/"$USERNAME" && rm teamspeak.tar.bz2
