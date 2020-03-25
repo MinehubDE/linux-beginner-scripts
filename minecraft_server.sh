@@ -104,6 +104,7 @@ echo "[2] 1.12.2"
 echo "[3] 1.13.2"
 echo "[4] 1.14.4"
 echo "[5] 1.15.1"
+echo "[6] 1.15.2"
 
 echo ""
 
@@ -129,6 +130,10 @@ while [ $CASE -ne 0 ]; do
                 ;;
 		5)
 		VERSION="1.15.1"
+		CASE=0
+		;;
+		5)
+		VERSION="1.15.2"
 		CASE=0
                 ;;
         esac
