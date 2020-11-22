@@ -26,4 +26,6 @@ Go into the folder and execute the script of your choice, e.g.
 
     cd linux-beginner-scripts* && ./mysql_server.sh
 
+    cd linux-beginner-scripts* && ./nextcloud.sh
+
     cd linux-beginner-scripts* && ./teamspeak.sh
