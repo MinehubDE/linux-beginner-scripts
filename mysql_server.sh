@@ -51,6 +51,7 @@ if [[ "$PUBLIC" =~ ^(YES|yes|y)$ ]]; then
         echo "YES was not entered. Database will stay only locally accessible."
 else
 	sed -i 's/^bind-address.*/#bind-address = 127.0.0.1/' /etc/mysql/mariadb.conf.d/50-server.cnf
+	systemctl restart mariadb
 fi
 
 echo -e "\n---------------------------------------------------------------------------------\n"
