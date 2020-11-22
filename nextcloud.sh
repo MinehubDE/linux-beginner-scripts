@@ -59,7 +59,7 @@ wget -q -O - https://packages.sury.org/php/apt.gpg | apt-key add -
 OS_VERSION=$(cat /etc/*-release | grep VERSION_CODENAME | sed 's/.*=//')
 echo "deb https://packages.sury.org/php/ $OS_VERSION main" > /etc/apt/sources.list.d/php.list
 apt-get update
-apt-get install php-apcu php-bcmath php-curl php-fpm php-gd php-gmp php-imagick php-intl php-mbstring php-mysql php-xml php-zip
+apt-get install -y php-apcu php-bcmath php-curl php-fpm php-gd php-gmp php-imagick php-intl php-mbstring php-mysql php-xml php-zip
 
 # configure nginx
 echo "--------------------------------------------------"
