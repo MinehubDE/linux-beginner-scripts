@@ -98,46 +98,8 @@ while [ $CASE -ne 0 ]; do
 	esac
 done
 
-echo -e "Which Version would you like to use?\n"
-echo "[1] 1.8.8"
-echo "[2] 1.12.2"
-echo "[3] 1.13.2"
-echo "[4] 1.14.4"
-echo "[5] 1.15.1"
-echo "[6] 1.15.2"
-
-echo ""
-
-CASE=1
-while [ $CASE -ne 0 ]; do
-        read -r -p "Please enter the number of your choice: " VERSION_INT
-        case $VERSION_INT in
-                1)
-                VERSION="1.8.8"
-                CASE=0
-                ;;
-                2)
-                VERSION="1.12.2"
-                CASE=0
-                ;;
-                3)
-                VERSION="1.13.2"
-                CASE=0
-		;;
-		4)
-		VERSION="1.14.4"
-		CASE=0
-                ;;
-		5)
-		VERSION="1.15.1"
-		CASE=0
-		;;
-		6)
-		VERSION="1.15.2"
-		CASE=0
-                ;;
-        esac
-done
+echo "Which version would you like to use?"
+read -r -p "Please enter the version of your choice [ 1.8.8 / 1.12.2 / 1.15.2 ]: " VERSION
 
 echo -e "\n---------------------------------------------------------------------------------\n"
 echo "Your server is getting created... Please wait..."
