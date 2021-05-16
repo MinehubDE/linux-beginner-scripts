@@ -20,7 +20,7 @@ echo -e "Enter source backup folder\n"
 read SRCDIR
 
 while :; do
-if [ $SRCDIR -ne 0 ]; then
+if ! [ $SRCDIR -ne 0 ]; then
 	if [ -d "$SRCDIR" ]; then
 		break
 	else 
@@ -47,8 +47,8 @@ echo -e "Enter destination backup folder\n"
 read DESDIR
 
 while :; do
-if [ $DESDIR == $SRCDIR ]; then
-	if [ $DESDIR -ne 0 ]; then
+if [ $DESDIR = $SRCDIR ]; then
+	if ! [ $DESDIR -ne 0 ]; then
 		if [ -d "$DESDIR" ]; then
 			break
 		else 
