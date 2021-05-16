@@ -99,7 +99,7 @@ while [ $CASE -ne 0 ]; do
 done
 
 echo "Which version would you like to use?"
-read -r -p "Please enter the version of your choice [ 1.8.8 / 1.12.2 / 1.15.2 ]: " VERSION
+read -r -p "Please enter the version of your choice [ 1.8.8 / 1.12.2 / 1.16.5 ]: " VERSION
 
 echo -e "\n---------------------------------------------------------------------------------\n"
 echo "Your server is getting created... Please wait..."
