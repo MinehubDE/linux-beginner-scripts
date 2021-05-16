@@ -15,7 +15,7 @@ fi
 # Source Backup Folder
 #----------------------------------------------------------
 
-echo -e "Enter source backup folder\n"
+echo -e "Enter source backup folder as example '/home/backup'\n"
 
 read SRCDIR
 
@@ -23,7 +23,7 @@ while :; do
 if [ -d "$SRCDIR" ]; then
 	break
 else 
-	if [ "$SRCDIR" == "l" ] || [ "$SRCDIR" == "exit" ] || [ "$SRCDIR" == "q" || [ "$SRCDIR" == "leave" ]; then
+	if [ "$SRCDIR" == "l" ] || [ "$SRCDIR" == "exit" ] || [ "$SRCDIR" == "q" || [ "$SRCDIR" == "leave" || [ "$SRCDIR" == "quit" ]; then
 		echo "This script will exit now."
 		exit 1
 	else
@@ -38,7 +38,7 @@ done
 # Destionation Backup Folder
 #----------------------------------------------------------
 
-echo -e "Enter destination backup folder\n"
+echo -e "Enter destination backup folder as example '/home/backup'\n"
 
 read DESDIR
 
@@ -51,7 +51,7 @@ if ! [ $DESDIR = $SRCDIR ]; then
 		echo -e "Enter source backup folder\n"
 		read DESDIR
 	fi
-elif [ "$DESDIR" == "l" ] || [ "$DESDIR" == "exit" ] || [ "$DESDIR" == "q" ] || [ "$DESDIR" == "leave" ]; then
+elif [ "$DESDIR" == "l" ] || [ "$DESDIR" == "exit" ] || [ "$DESDIR" == "q" ] || [ "$DESDIR" == "leave" || [ "$DESDIR" == "quit" ]; then
 		echo "This script will exit now."
 		exit 1
 else
@@ -69,7 +69,7 @@ echo -e "Do you want that the script will be executed automatically?\n"
 
 read -r -p "Please insert 'YES' if you want it, otherwise it would be skipped! " ANSWER
 
-if [ "$ANSWER" == "YES" ] || [ "$ANSWER" == "y" ]; then
+if [ "$ANSWER" == "YES" ] || [ "$ANSWER" == "y" || [ "\$ANSWER" == "Y" || [ "\$ANSWER" == "yes" ]; then
 
 echo -e "Enter time in hour (0 - 23) when the backup should be daily generated\n"
 
@@ -79,7 +79,7 @@ re='^[0-9]+$'
 
 while :; do
 if ! [[ $CRONTAB =~ $re ]] ; then
-		if [ "$CRONTAB" == "l" ] || [ "$CRONTAB" == "exit" ] || [ "$CRONTAB" == "q" ] || [ "$CRONTAB" == "leave" ]; then
+		if [ "$CRONTAB" == "l" ] || [ "$CRONTAB" == "exit" ] || [ "$CRONTAB" == "q" ] || [ "$CRONTAB" == "leave" || [ "$CRONTAB" == "quit" ]; then
 			echo "This script will exit now."
 			exit 1
 		else
@@ -105,13 +105,13 @@ fi
 # Filename
 #----------------------------------------------------------
 
-read -r -p "Enter your first part of the filename in front of the time: " FPART
+read -r -p "Enter your first part of the backup filename which is in front of the time: " FPART
 
 VALIDATE='[^a-zA-Z]'
 
 while :; do
 if [[ $FPART =~ $VALIDATE ]]; then
-	if [ "$FPART" == "l" ] || [ "$FPART" == "exit" ] || [ "$FPART" == "q" ]; then
+	if [ "$FPART" == "l" ] || [ "$FPART" == "exit" ] || [ "$FPART" == "q" || [ "$FPART" == "leave" || [ "$FPART" == "quit" ]; then
 			echo "This script will exit now."
 			exit 1
 	else
@@ -143,7 +143,7 @@ read -r -p "Please insert 'YES' if you want it, otherwise it would be skipped! "
 
 re='^[0-9]+$'
 
-if [ "\$ANSWER" == "YES" ] || [ "\$ANSWER" == "y" ]; then
+if [ "\$ANSWER" == "YES" ] || [ "\$ANSWER" == "y" || [ "\$ANSWER" == "Y" || [ "\$ANSWER" == "yes" ]; then
 	echo "Loading..."
 	
 	cd /root
