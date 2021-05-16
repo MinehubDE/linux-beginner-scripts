@@ -20,21 +20,17 @@ echo -e "Enter source backup folder\n"
 read SRCDIR
 
 while :; do
-if ! [ $SRCDIR -ne 0 ]; then
-	if [ -d "$SRCDIR" ]; then
-		break
-	else 
-		if [ "$SRCDIR" == "l" ] || [ "$SRCDIR" == "exit" ] || [ "$SRCDIR" == "q" || [ "$SRCDIR" == "leave"]; then
-			echo "This script will exit now."
-			exit 1
-		else
-			echo "Error: Not a valid path"
-			echo -e "Enter source backup folder\n"
-			read SRCDIR
-		fi
-	fi
-else
+if [ -d "$SRCDIR" ]; then
 	break
+else 
+	if [ "$SRCDIR" == "l" ] || [ "$SRCDIR" == "exit" ] || [ "$SRCDIR" == "q" || [ "$SRCDIR" == "leave" ]; then
+		echo "This script will exit now."
+		exit 1
+	else
+		echo "Error: Not a valid path"
+		echo -e "Enter source backup folder\n"
+		read SRCDIR
+	fi
 fi
 done
 
@@ -47,26 +43,17 @@ echo -e "Enter destination backup folder\n"
 read DESDIR
 
 while :; do
-if [ $DESDIR = $SRCDIR ]; then
-	if ! [ $DESDIR -ne 0 ]; then
-		if [ -d "$DESDIR" ]; then
-			break
-		else 
-			
-			else
-				echo "Error: Not a valid path"
-				echo -e "Enter source backup folder\n"
-				read DESDIR
-			fi
-		fi
-	else
+if ! [ $DESDIR = $SRCDIR ]; then
+	if [ -d "$DESDIR" ]; then
 		break
+	else 
+		echo "Error: Not a valid path"
+		echo -e "Enter source backup folder\n"
+		read DESDIR
 	fi
-else 
-	if [ "$DESDIR" == "l" ] || [ "$DESDIR" == "exit" ] || [ "$DESDIR" == "q" || [ "$DESDIR" == "leave"]; then
+elif [ "$DESDIR" == "l" ] || [ "$DESDIR" == "exit" ] || [ "$DESDIR" == "q" || [ "$DESDIR" == "leave" ]; then
 		echo "This script will exit now."
 		exit 1
-	fi
 else
 	echo "Error: You have the same path"
 	echo -e "Enter source backup folder\n"
@@ -122,37 +109,34 @@ echo -e "Enter your first part of the filename in front of the time\n"
 
 read $FPART
 
-VALIDATE='^[0-9a-zA-Z._-]+$'
+VALIDATE='^[a-zA-Z]'
 
 while :; do
-if ! [ $FPART =~ $VALIDATE ]; then
+if [[ $FPART =~ $VALIDATE ]]; then
 	if [ "$FPART" == "l" ] || [ "$FPART" == "exit" ] || [ "$FPART" == "q" ]; then
 			echo "This script will exit now."
 			exit 1
-		else
-			echo "Error: Not a valid filename"
-			echo -e "Enter your first part of the filename\n"
-			read FPART
-		fi
+	else
+		echo "Error: Not a valid filename"
+		echo -e "Enter your first part of the filename\n"
+		read FPART
+	fi
 else
 	break
 fi
 done
 
-TIME=`date +%d-%m-%y-%H-%M`  
-
-FILENAME=$FPART-$TIME.tar.gz 
-
 #----------------------------------------------------------
 # Generate new file
 #----------------------------------------------------------
 
-echo "FFILENAME=$FILENAME" > backup-temp.sh
-echo "DDESDIR=$DESDIR" > backup-temp.sh
-echo "SSRCDIR=$SSRCDIR" > backup-temp.sh
-echo "$content" > backup-temp.sh
+echo "TIME=`date +%d-%m-%y-%H-%M`" >> backup-temp.sh
+echo "FILENAME=$FPART-$TIME.tar.gz" >> backup-temp.sh
+echo "FFPART=$FPART" >> backup-temp.sh
+echo "DDESDIR=$DESDIR" >> backup-temp.sh
+echo "SSRCDIR=$SRCDIR" >> backup-temp.sh
 
-content="
+cat >> backup-temp.sh <<EOF
 tar -cpzf $DDESDIR/$FFILENAME -P $SSRCDIR
 
 echo -e "You want to change the paths?\n"
@@ -173,9 +157,9 @@ if [ "$ANSWER" == "YES" ] || [ "$ANSWER" == "y" ]; then
 		echo "Your answer was \"$ANSWER\" and not YES. So this script will exit now."
 		exit 1
 fi
-"
+EOF
 
 # removes the script & rename the temp to main
+cd "$( dirname "${BASH_SOURCE[0]}" )"
 rm -- "$0"
-cd ${BASH_SOURCE[0]}
 mv backup-temp.sh backup.sh
