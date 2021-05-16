@@ -23,6 +23,8 @@ Go into the folder and execute the script of your choice, e.g.
     cd linux-beginner-scripts* && ./jenkins.sh
 
     cd linux-beginner-scripts* && ./minecraft_server.sh
+    
+    cd linux-beginner-scripts* && ./backup.sh
 
     cd linux-beginner-scripts* && ./mysql_server.sh
 
