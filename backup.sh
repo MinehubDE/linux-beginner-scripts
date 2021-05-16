@@ -52,9 +52,7 @@ if [ $DESDIR = $SRCDIR ]; then
 		if [ -d "$DESDIR" ]; then
 			break
 		else 
-			if [ "$DESDIR" == "l" ] || [ "$DESDIR" == "exit" ] || [ "$DESDIR" == "q" || [ "$DESDIR" == "leave"]; then
-				echo "This script will exit now."
-				exit 1
+			
 			else
 				echo "Error: Not a valid path"
 				echo -e "Enter source backup folder\n"
@@ -63,6 +61,11 @@ if [ $DESDIR = $SRCDIR ]; then
 		fi
 	else
 		break
+	fi
+else 
+	if [ "$DESDIR" == "l" ] || [ "$DESDIR" == "exit" ] || [ "$DESDIR" == "q" || [ "$DESDIR" == "leave"]; then
+		echo "This script will exit now."
+		exit 1
 	fi
 else
 	echo "Error: You have the same path"
