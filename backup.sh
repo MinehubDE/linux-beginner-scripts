@@ -51,7 +51,7 @@ if ! [ $DESDIR = $SRCDIR ]; then
 		echo -e "Enter source backup folder\n"
 		read DESDIR
 	fi
-elif [ "$DESDIR" == "l" ] || [ "$DESDIR" == "exit" ] || [ "$DESDIR" == "q" || [ "$DESDIR" == "leave" ]; then
+elif [ "$DESDIR" == "l" ] || [ "$DESDIR" == "exit" ] || [ "$DESDIR" == "q" ] || [ "$DESDIR" == "leave" ]; then
 		echo "This script will exit now."
 		exit 1
 else
@@ -105,11 +105,9 @@ fi
 # Filename
 #----------------------------------------------------------
 
-echo -e "Enter your first part of the filename in front of the time\n"
+read -r -p "Enter your first part of the filename in front of the time: " FPART
 
-read $FPART
-
-VALIDATE='^[a-zA-Z]'
+VALIDATE='[^a-zA-Z]'
 
 while :; do
 if [[ $FPART =~ $VALIDATE ]]; then
@@ -118,10 +116,10 @@ if [[ $FPART =~ $VALIDATE ]]; then
 			exit 1
 	else
 		echo "Error: Not a valid filename"
-		echo -e "Enter your first part of the filename\n"
-		read FPART
+		read -r -p "Enter your first part of the filename in front of the time: " FPART
 	fi
 else
+	echo -e "Setup done!"
 	break
 fi
 done
@@ -130,14 +128,14 @@ done
 # Generate new file
 #----------------------------------------------------------
 
-echo "TIME=`date +%d-%m-%y-%H-%M`" >> backup-temp.sh
-echo "FILENAME=$FPART-$TIME.tar.gz" >> backup-temp.sh
-echo "FFPART=$FPART" >> backup-temp.sh
+echo "TIME=date +%d-%m-%y-%H-%M" >> backup-temp.sh
+echo "FFPART=\$FPART" >> backup-temp.sh
+echo "FILENAME=\${FPART}-\${TIME}.tar.gz" >> backup-temp.sh
 echo "DDESDIR=$DESDIR" >> backup-temp.sh
 echo "SSRCDIR=$SRCDIR" >> backup-temp.sh
 
 cat >> backup-temp.sh <<EOF
-tar -cpzf $DDESDIR/$FFILENAME -P $SSRCDIR
+tar -cpzf \${DDESDIR}/\${FFILENAME} -P \${SSRCDIR}
 
 echo -e "You want to change the paths?\n"
 
@@ -145,16 +143,16 @@ read -r -p "Please insert 'YES' if you want it, otherwise it would be skipped! "
 
 re='^[0-9]+$'
 
-if [ "$ANSWER" == "YES" ] || [ "$ANSWER" == "y" ]; then
+if [ "\$ANSWER" == "YES" ] || [ "\$ANSWER" == "y" ]; then
 	echo "Loading..."
 	
 	cd /root
 	wget https://github.com/crafter23456/linux-beginner-scripts/blob/master/backup.sh
 	cd /root && ./backup.sh
 	
-	rm -- "$0"
+	rm -- "\$0"
 	else
-		echo "Your answer was \"$ANSWER\" and not YES. So this script will exit now."
+		echo "Your answer was \"\$ANSWER\" and not YES. So this script will exit now."
 		exit 1
 fi
 EOF
