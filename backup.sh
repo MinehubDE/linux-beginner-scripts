@@ -15,7 +15,7 @@ fi
 # Source Backup Folder
 #----------------------------------------------------------
 
-echo -e "Enter source backup folder as example '/home/backup'\n"
+echo -e "Please enter the source backup folder, which get archived for example '/home/backup'\n"
 
 read SRCDIR
 
@@ -24,11 +24,11 @@ if [ -d "$SRCDIR" ]; then
 	break
 else 
 	if [ "$SRCDIR" == "l" ] || [ "$SRCDIR" == "exit" ] || [ "$SRCDIR" == "q" || [ "$SRCDIR" == "leave" || [ "$SRCDIR" == "quit" ]; then
-		echo "This script will exit now."
+		echo "You have cancelled the script. So this script will exit now."
 		exit 1
 	else
 		echo "Error: Not a valid path"
-		echo -e "Enter source backup folder\n"
+		echo -e "Please enter the source backup folder, which get archived for example '/home/backup'\n"
 		read SRCDIR
 	fi
 fi
@@ -38,7 +38,7 @@ done
 # Destionation Backup Folder
 #----------------------------------------------------------
 
-echo -e "Enter destination backup folder as example '/home/backup'\n"
+echo -e "Please enter the destination backup folder, which get archived for example '/home/backup'\n"
 
 read DESDIR
 
@@ -48,11 +48,11 @@ if ! [ $DESDIR = $SRCDIR ]; then
 		break
 	else 
 		echo "Error: Not a valid path"
-		echo -e "Enter source backup folder\n"
+		echo -e "Please enter the destination backup folder, which get archived for example '/home/backup'\n"
 		read DESDIR
 	fi
 elif [ "$DESDIR" == "l" ] || [ "$DESDIR" == "exit" ] || [ "$DESDIR" == "q" ] || [ "$DESDIR" == "leave" || [ "$DESDIR" == "quit" ]; then
-		echo "This script will exit now."
+		echo "You have cancelled the script. So this script will exit now."
 		exit 1
 else
 	echo "Error: You have the same path"
@@ -80,7 +80,7 @@ re='^[0-9]+$'
 while :; do
 if ! [[ $CRONTAB =~ $re ]] ; then
 		if [ "$CRONTAB" == "l" ] || [ "$CRONTAB" == "exit" ] || [ "$CRONTAB" == "q" ] || [ "$CRONTAB" == "leave" || [ "$CRONTAB" == "quit" ]; then
-			echo "This script will exit now."
+			echo "You have cancelled the script. So this script will exit now."
 			exit 1
 		else
 			echo "Error: Not a number"
@@ -92,72 +92,33 @@ else
 fi
 done
 
-crontab -e
-echo "00 $CRONTAB * * * /bin/bash /root/backup.sh >/dev/null 2>&1"
-
-echo -e "The script must be in the root dictionary otherwise it wont work\n"
+crontab -r backupscript
+crontab -e backupscript | { cat; echo echo "00 $CRONTAB * * * /bin/bash tar -cpzf $DESDIR/$FILENAME -P $SRCDIR >/dev/null 2>&1"; } | crontab -
 
 else
-	echo "Your answer was \"$ANSWER\" and not YES. So this step gets skipped..."
+	echo "Your answer was \"$ANSWER\" and not YES. Therefore this step will be skipped...."
 fi
 
 #----------------------------------------------------------
 # Filename
 #----------------------------------------------------------
 
-read -r -p "Enter your first part of the backup filename which is in front of the time: " FPART
+read -r -p "Please enter the desired name of the backup that comes before the time: " FPART
 
 VALIDATE='[^a-zA-Z]'
 
 while :; do
 if [[ $FPART =~ $VALIDATE ]]; then
 	if [ "$FPART" == "l" ] || [ "$FPART" == "exit" ] || [ "$FPART" == "q" || [ "$FPART" == "leave" || [ "$FPART" == "quit" ]; then
-			echo "This script will exit now."
+			echo "You have cancelled the script. The script will exit now."
 			exit 1
 	else
 		echo "Error: Not a valid filename"
-		read -r -p "Enter your first part of the filename in front of the time: " FPART
+		read -r -p "Please enter the name of the backup that comes before the time: " FPART
 	fi
 else
 	echo -e "Setup done!"
+	echo -e "The backup process was completed successfully."
 	break
 fi
 done
-
-#----------------------------------------------------------
-# Generate new file
-#----------------------------------------------------------
-
-echo "TIME=date +%d-%m-%y-%H-%M" >> backup-temp.sh
-echo "FFPART=\$FPART" >> backup-temp.sh
-echo "FILENAME=\${FPART}-\${TIME}.tar.gz" >> backup-temp.sh
-echo "DDESDIR=$DESDIR" >> backup-temp.sh
-echo "SSRCDIR=$SRCDIR" >> backup-temp.sh
-
-cat >> backup-temp.sh <<EOF
-tar -cpzf \${DDESDIR}/\${FFILENAME} -P \${SSRCDIR}
-
-echo -e "You want to change the paths?\n"
-
-read -r -p "Please insert 'YES' if you want it, otherwise it would be skipped! " NEW
-
-re='^[0-9]+$'
-
-if [ "\$ANSWER" == "YES" ] || [ "\$ANSWER" == "y" || [ "\$ANSWER" == "Y" || [ "\$ANSWER" == "yes" ]; then
-	echo "Loading..."
-	
-	cd /root
-	wget https://github.com/crafter23456/linux-beginner-scripts/blob/master/backup.sh
-	cd /root && ./backup.sh
-	
-	rm -- "\$0"
-	else
-		echo "Your answer was \"\$ANSWER\" and not YES. So this script will exit now."
-		exit 1
-fi
-EOF
-
-# removes the script & rename the temp to main
-cd "$( dirname "${BASH_SOURCE[0]}" )"
-rm -- "$0"
-mv backup-temp.sh backup.sh
