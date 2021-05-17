@@ -15,7 +15,7 @@ fi
 # Source Backup Folder
 #----------------------------------------------------------
 
-echo -e "Please enter the source backup folder, which get archived for example '/home/backup'\n"
+echo -e "Please enter the source backup folder, which get archived for example '/home/backup'.\n"
 
 read -r SRCDIR
 echo ""
@@ -28,8 +28,8 @@ else
 		echo "You have cancelled the script. So this script will exit now."
 		exit 1
 	else
-		echo "Error: Not a valid path"
-		echo -e "Please enter the source backup folder, which get archived for example '/home/backup'\n"
+		echo "Error: Not a valid path!"
+		echo -e "Please enter the source backup folder, which get archived for example '/home/backup'.\n"
 		read -r SRCDIR
 		echo ""
 	fi
@@ -40,7 +40,7 @@ done
 # Destionation Backup Folder
 #----------------------------------------------------------
 
-echo -e "Please enter the destination backup folder, which get archived for example '/home/backup'\n"
+echo -e "Please enter the destination backup folder, which get archived for example '/home/backup'.\n"
 
 read -r DESDIR
 echo ""
@@ -50,8 +50,8 @@ if ! [ "$DESDIR" = "$SRCDIR" ]; then
 	if [ -d "$DESDIR" ]; then
 		break
 	else 
-		echo "Error: Not a valid path"
-		echo -e "Please enter the destination backup folder, which get archived for example '/home/backup'\n"
+		echo "Error: Not a valid path!"
+		echo -e "Please enter the destination backup folder, which get archived for example '/home/backup'.\n"
 		read -r DESDIR
 		echo ""
 	fi
@@ -59,8 +59,8 @@ elif [ "$DESDIR" == "l" ] || [ "$DESDIR" == "exit" ] || [ "$DESDIR" == "q" ] || 
 		echo "You have cancelled the script. So this script will exit now."
 		exit 1
 else
-	echo -e "Error: You have the same path"
-	echo -e "Please enter the destination backup folder, which get archived for example '/home/backup'\n"
+	echo -e "Error: You have the same path!"
+	echo -e "Please enter the destination backup folder, which get archived for example '/home/backup'.\n"
 	read -r DESDIR
 	echo ""
 fi
@@ -82,7 +82,7 @@ if [[ $FPART =~ $VALIDATE ]]; then
 			echo "You have cancelled the script. The script will exit now."
 			exit 1
 	else
-		echo "Error: Not a valid filename"
+		echo "Error: Not a valid filename!"
 		read -r -p "Please enter the name of the backup that comes before the time: " FPART
 		echo ""
 	fi
@@ -103,7 +103,7 @@ echo ""
 
 if [ "$ANSWER" == "YES" ] || [ "$ANSWER" == "y" ] || [ "$ANSWER" == "Y" ] || [ "$ANSWER" == "yes" ]; then
 
-echo -e "Enter time in hour (0 - 23) when the backup should be daily generated\n"
+echo -e "Enter time in hour (0 - 23) when the backup should be daily generated.\n"
 
 read -r CRONTAB
 
@@ -115,8 +115,8 @@ if ! [[ $CRONTAB =~ $re ]] ; then
 			echo "You have cancelled the script. So this script will exit now."
 			exit 1
 		else
-			echo "Error: Not a number"
-			echo -e "Enter time in hour (0 - 23) when the backup should be daily generated\n"
+			echo "Error: Not a number!"
+			echo -e "Enter time in hour (0 - 23) when the backup should be daily generated.\n"
 			read -r CRONTAB
 			echo ""
 		fi
@@ -129,7 +129,7 @@ fi
 done
 
 else
-	echo "Your answer was \"$ANSWER\" and not YES. Therefore this step will be skipped...."
+	echo "Your answer was \"$ANSWER\" and not YES. Therefore this step will be skipped..."
 	echo -e "Setup done!"
 	echo -e "The backup process was completed successfully."
 fi
