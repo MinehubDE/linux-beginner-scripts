@@ -172,6 +172,7 @@ EOF
 		rm -f /home/"$USERNAME"/bedrock_server
 		wget -q https://minecraft-mirror.io/bedrock-server.zip -O /tmp/bedrock-server.zip
 		unzip -qq -o /tmp/bedrock-server.zip -d /home/"$USERNAME"/
+		chmod 700 /home/"$USERNAME"/bedrock_server
 		cat > /home/"$USERNAME"/start.sh << EOF
 #!/bin/bash
 
