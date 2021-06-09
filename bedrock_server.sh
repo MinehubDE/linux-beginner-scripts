@@ -113,7 +113,7 @@ case $EXTRA_DEPENDENCIES in
         	apt-get -y install default-jre-headless
         ;;
         BULLSHIT)
-		apt-get -y install openssl "libstdc++6"
+		apt-get -y install openssl "libstdc++6" unzip
 		grep -q Debian /etc/*-release
 		if [ $? -eq 0 ]; then
 			dpkg -s libc6 | grep Version | sed 's/Version: //g' | grep "2.28-8"
@@ -172,6 +172,7 @@ EOF
 		rm -f /home/"$USERNAME"/bedrock_server
 		wget -q https://minecraft-mirror.io/bedrock-server.zip -O /tmp/bedrock-server.zip
 		unzip -qq -o /tmp/bedrock-server.zip -d /home/"$USERNAME"/
+		chmod 700 /home/"$USERNAME"/bedrock_server
 		cat > /home/"$USERNAME"/start.sh << EOF
 #!/bin/bash
 
