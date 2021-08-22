@@ -67,7 +67,9 @@ echo "Configuring NGINX"
 echo "--------------------------------------------------"
 cp $(dirname $0)/nextcloud/nginx.conf /etc/nginx/sites-enabled/nextcloud.conf
 IP=$(host myip.opendns.com resolver1.opendns.com | grep "myip.opendns.com has address" | awk '{ print $NF }')
-sed -i "s/PLACEHOLDER/$IP/g" /etc/nginx/sites-enabled/nextcloud.conf
+sed -i "s/IP_PLACEHOLDER/$IP/g" /etc/nginx/sites-enabled/nextcloud.conf
+PHP_VERSION=$(php -r 'echo PHP_MAJOR_VERSION; echo "."; echo PHP_MINOR_VERSION;')
+sed -i "s/\[PHP_PLACEHOLDER\]/$PHP_VERSION/g" /etc/nginx/sites-enabled/nextcloud.conf
 
 # configure mariadb user and database
 echo "--------------------------------------------------"
@@ -111,7 +113,6 @@ sed -i 's/PLACEHOLDER/\\OC\\Memcache\\APCu/' config/config.php
 echo "--------------------------------------------------"
 echo "Restarting services"
 echo "--------------------------------------------------"
-PHP_VERSION=$(php -r 'echo PHP_MAJOR_VERSION; echo "."; echo PHP_MINOR_VERSION;')
 systemctl restart php${PHP_VERSION}-fpm
 # restart nginx
 systemctl restart nginx
