@@ -18,7 +18,8 @@ read -r -p "Which Java version your want to install? [ 8 / 11 / ... / default ] 
 case $VERSION in
 	default)
 		apt-get update && apt-get install -y default-jre-headless
-		update-java-alternatives -s java-1.11.0-openjdk-amd64
+		JAVA_ALTERNATIVE=$(update-java-alternatives -l | grep "java-.*-openjdk" | awk '{ print $1 }')
+		update-java-alternatives -s "$JAVA_ALTERNATIVE"
 	;;
 	*([0-9]))
 		apt-get update && apt-get install -y apt-transport-https ca-certificates gnupg2 lsb-release wget
@@ -36,6 +37,7 @@ case $VERSION in
 			exit 1
 		fi
 		apt-get install -y "adoptopenjdk-$VERSION-hotspot"
+		update-java-alternatives -s "adoptopenjdk-$VERSION-hotspot-amd64"
 	;;
 	*)
 		echo "Error in validating input: $VERSION"
