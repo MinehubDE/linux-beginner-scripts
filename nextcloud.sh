@@ -97,6 +97,7 @@ PHP_FPM_CONF=$(find /etc/php/ -name "www.conf")
 sed -i 's/^;env\[PATH\] =.*/env[PATH] = \/usr\/local\/bin:\/usr\/bin:\/bin\//' ${PHP_FPM_CONF}
 PHP_FPM_INI=$(find /etc/php/*/fpm -name "php.ini")
 sed -i 's/^memory_limit =.*/memory_limit = 512M/' ${PHP_FPM_INI}
+grep -q "apc.enable_cli=1" "/etc/php/$PHP_VERSION/cli/php.ini" || echo "apc.enable_cli=1" >> "/etc/php/$PHP_VERSION/cli/php.ini"
 
 # configure Nextcloud
 echo "--------------------------------------------------"
@@ -106,8 +107,9 @@ NC_ADMIN_PW=$(pwgen -s 25 1)
 cd /var/www/nextcloud
 sudo -u www-data php occ maintenance:install --database "mysql" --database-name "nextclouddb" --database-user "nextcloud" --database-pass "$MYSQL_NC_PW" --admin-user "admin" --admin-pass "$NC_ADMIN_PW"
 sudo -u www-data php occ config:system:set trusted_domains 0 --value=${IP}
-sudo -u www-data php occ config:system:set memcache.local --value=PLACEHOLDER
-sed -i 's/PLACEHOLDER/\\OC\\Memcache\\APCu/' config/config.php
+sudo -u www-data php occ config:system:set memcache.local --value=MEM_PLACEHOLDER
+sudo -u www-data php occ config:system:set default_phone_region --value=DE
+sed -i 's/MEM_PLACEHOLDER/\\OC\\Memcache\\APCu/' config/config.php
 
 # restart php-fpm
 echo "--------------------------------------------------"
