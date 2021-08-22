@@ -108,8 +108,8 @@ cd /var/www/nextcloud
 sudo -u www-data php occ maintenance:install --database "mysql" --database-name "nextclouddb" --database-user "nextcloud" --database-pass "$MYSQL_NC_PW" --admin-user "admin" --admin-pass "$NC_ADMIN_PW"
 sudo -u www-data php occ config:system:set trusted_domains 0 --value=${IP}
 sudo -u www-data php occ config:system:set memcache.local --value=MEM_PLACEHOLDER
-sudo -u www-data php occ config:system:set default_phone_region --value=DE
 sed -i 's/MEM_PLACEHOLDER/\\OC\\Memcache\\APCu/' config/config.php
+sudo -u www-data php occ config:system:set default_phone_region --value=DE
 
 # restart php-fpm
 echo "--------------------------------------------------"
