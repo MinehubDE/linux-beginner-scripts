@@ -66,7 +66,7 @@ echo "--------------------------------------------------"
 echo "Configuring NGINX"
 echo "--------------------------------------------------"
 cp $(dirname $0)/nextcloud/nginx.conf /etc/nginx/sites-enabled/nextcloud.conf
-IP=$(host myip.opendns.com resolver1.opendns.com | grep "myip.opendns.com has address" | awk '{ print $NF }')
+IP=$(ip r get $(ip r | grep "default via" |sed 's/.*via //' | sed 's/ dev.*//') | head -1 | sed 's/.*src //' | sed 's/ .*//')
 sed -i "s/IP_PLACEHOLDER/$IP/g" /etc/nginx/sites-enabled/nextcloud.conf
 PHP_VERSION=$(php -r 'echo PHP_MAJOR_VERSION; echo "."; echo PHP_MINOR_VERSION;')
 sed -i "s/\[PHP_PLACEHOLDER\]/$PHP_VERSION/g" /etc/nginx/sites-enabled/nextcloud.conf
