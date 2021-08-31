@@ -37,11 +37,38 @@ apt-get update && apt-get install -y bzip2 host mariadb-server nginx-light pwgen
 echo "--------------------------------------------------"
 echo "Generating SSL certificates"
 echo "--------------------------------------------------"
-if [ ! -f /etc/ssl/nextcloud.key ]; then
-	openssl req -x509 -nodes -newkey rsa:4096 -keyout /etc/ssl/nextcloud.key -out /etc/ssl/nextcloud.pem -days 365 -subj "/C=AN/ST=ANON/L=ANON/O=ANON/OU=ANON/CN=ANON/emailAddress=ANON"
-else
-	echo "Found existing certificate. Will skip creation of a new one."
-fi
+CERT=0
+while [[ $CERT == 0 ]]; do
+	read -r -p "Do you own a domain that points on this server? [yes/no]: " DOMAIN
+	case $DOMAIN in
+		YES|yes|y)
+			read -r -p "Please enter the domain name, e.g. blubb.example.com: " DOMAIN_FQDN
+			apt-get -y install certbot
+			kill -9 $(lsof -i :80 | grep "LISTEN" | awk '{ print $2 }') 2>/dev/null
+			certbot certonly --standalone -d "$DOMAIN_FQDN" --non-interactive --agree-tos -m "webmaster@$DOMAIN_FQDN"
+			if [[ $? -eq 0 ]]; then
+				CERT_PATH="/etc/letsencrypt/live/$DOMAIN_FQDN/fullchain.pem"
+				CERT_KEY_PATH="/etc/letsencrypt/live/$DOMAIN_FQDN/privkey.pem"
+				CERT=1
+			else
+				exit $?
+			fi
+		;;
+		NO|no|n)
+			CERT_PATH=/etc/ssl/nextcloud.pem
+			CERT_KEY_PATH=/etc/ssl/nextcloud.key
+			if [ ! -f "$CERT_KEY_PATH" ]; then
+				openssl req -x509 -nodes -newkey rsa:4096 -keyout "$CERT_KEY_PATH" -out "$CERT_PATH" -days 365 -subj "/C=AN/ST=ANON/L=ANON/O=ANON/OU=ANON/CN=ANON/emailAddress=ANON"
+			else
+				echo "Found existing certificate. Will skip creation of a new one."
+			fi
+			CERT=1
+		;;
+		*)
+			echo 'No valid input was given. If you do not own a domain, please type "no" without quotes.'
+		;;
+	esac
+done
 
 # download and extract latest Nextcloud version
 echo "--------------------------------------------------"
@@ -66,8 +93,15 @@ echo "--------------------------------------------------"
 echo "Configuring NGINX"
 echo "--------------------------------------------------"
 cp $(dirname $0)/nextcloud/nginx.conf /etc/nginx/sites-enabled/nextcloud.conf
-IP=$(ip r get $(ip r | grep "default via" |sed 's/.*via //' | sed 's/ dev.*//') | head -1 | sed 's/.*src //' | sed 's/ .*//')
 sed -i "s/IP_PLACEHOLDER/$IP/g" /etc/nginx/sites-enabled/nextcloud.conf
+sed -i "s~CERT_PATH_PLACEHOLDER~$CERT_PATH~g" /etc/nginx/sites-enabled/nextcloud.conf
+sed -i "s~CERT_KEY_PATH_PLACEHOLDER~$CERT_KEY_PATH~g" /etc/nginx/sites-enabled/nextcloud.conf
+if [ -z $DOMAIN_FQDN ]; then
+	IP=$(ip r get $(ip r | grep "default via" | sed 's/.*via //' | sed 's/ dev.*//') | head -1 | sed 's/.*src //' | sed 's/ .*//')
+else
+	sed -i '/add_header X-XSS-Protection.*/a\        add_header Strict-Transport-Security "max-age=15768000; preload;" always;' /etc/nginx/sites-enabled/nextcloud.conf
+	IP="$DOMAIN_FQDN"
+fi
 PHP_VERSION=$(php -r 'echo PHP_MAJOR_VERSION; echo "."; echo PHP_MINOR_VERSION;')
 sed -i "s/\[PHP_PLACEHOLDER\]/$PHP_VERSION/g" /etc/nginx/sites-enabled/nextcloud.conf
 
