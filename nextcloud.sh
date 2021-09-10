@@ -93,7 +93,6 @@ echo "--------------------------------------------------"
 echo "Configuring NGINX"
 echo "--------------------------------------------------"
 cp $(dirname $0)/nextcloud/nginx.conf /etc/nginx/sites-enabled/nextcloud.conf
-sed -i "s/IP_PLACEHOLDER/$IP/g" /etc/nginx/sites-enabled/nextcloud.conf
 sed -i "s~CERT_PATH_PLACEHOLDER~$CERT_PATH~g" /etc/nginx/sites-enabled/nextcloud.conf
 sed -i "s~CERT_KEY_PATH_PLACEHOLDER~$CERT_KEY_PATH~g" /etc/nginx/sites-enabled/nextcloud.conf
 if [ -z $DOMAIN_FQDN ]; then
@@ -102,6 +101,7 @@ else
 	sed -i '/add_header X-XSS-Protection.*/a\        add_header Strict-Transport-Security "max-age=15768000; preload;" always;' /etc/nginx/sites-enabled/nextcloud.conf
 	IP="$DOMAIN_FQDN"
 fi
+sed -i "s/IP_PLACEHOLDER/$IP/g" /etc/nginx/sites-enabled/nextcloud.conf
 PHP_VERSION=$(php -r 'echo PHP_MAJOR_VERSION; echo "."; echo PHP_MINOR_VERSION;')
 sed -i "s/\[PHP_PLACEHOLDER\]/$PHP_VERSION/g" /etc/nginx/sites-enabled/nextcloud.conf
 
@@ -153,6 +153,7 @@ systemctl restart php${PHP_VERSION}-fpm
 # restart nginx
 systemctl restart nginx
 
+function final_echo {
 echo -e "\n--------------------------------------------------"
 echo "--------------------------------------------------"
 echo "--------------------------------------------------"
@@ -162,6 +163,7 @@ echo "--------------------------------------------------"
 echo -e "--------------------------------------------------\n"
 
 echo "Please save the following credentials. They are currently nowhere stored and will be lost once this screen disappears."
+echo "The following credentials are also stored in a file: $HOME/nextlcoud.credentials"
 
 echo -e "\n--------------------------------------------------\n"
 echo "DATABASE USER: nextcloud"
@@ -173,4 +175,7 @@ echo "NEXTCLOUD WEB ENDPOINT: https://$IP/nextcloud"
 echo "NEXTCLOUD USER: admin"
 echo "NEXTCLOUD USER PASSWORD: $NC_ADMIN_PW"
 echo -e "\n--------------------------------------------------"
+}
 
+final_echo
+final_echo > "$HOME"/nextlcoud.credentials
