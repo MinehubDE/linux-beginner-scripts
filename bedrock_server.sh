@@ -103,10 +103,9 @@ fi
 case $EXTRA_DEPENDENCIES in
         PHP)
 	if [ ! -f /usr/local/bin/php ]; then
-	        wget -q https://jenkins.pmmp.io/job/PHP-7.4-Linux-x86_64/lastSuccessfulBuild/artifact/PHP_Linux-x86_64.tar.gz -O /tmp/PHP.tar.gz
-	        tar xzf /tmp/PHP.tar.gz -C /usr/local/lib/
+	        wget -q https://jenkins.pmmp.io/job/PHP-8.0-Aggregate/lastSuccessfulBuild/artifact/PHP-8.0-Linux-x86_64.tar.gz -O - | tar xzf - -C /usr/local/lib/
 	        ln -s /usr/local/lib/bin/php7/bin/php /usr/local/bin/php
-		sed -i 's/^zend_extension=.*/;zend_extension=opcache.so/g'/usr/local/lib/bin/php7/bin/php.ini
+		sed -i 's/^zend_extension=.*/;zend_extension=opcache.so/g' /usr/local/lib/bin/php7/bin/php.ini
 	fi
         ;;
         JAVA)
