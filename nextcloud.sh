@@ -86,7 +86,9 @@ wget -q -O - https://packages.sury.org/php/apt.gpg | apt-key add -
 OS_VERSION=$(cat /etc/*-release | grep VERSION_CODENAME | sed 's/.*=//')
 echo "deb https://packages.sury.org/php/ $OS_VERSION main" > /etc/apt/sources.list.d/php.list
 apt-get update
-apt-get install -y php-apcu php-bcmath php-curl php-fpm php-gd php-gmp php-imagick php-intl php-mbstring php-mysql php-xml php-zip libmagickcore-6.q16-6-extra
+apt-get -y install php-fpm
+PHP_VERSION=$(php -r 'echo PHP_MAJOR_VERSION; echo "."; echo PHP_MINOR_VERSION;')
+apt-get install -y php${PHP_VERSION}-apcu php-bcmath php-curl php-gd php-gmp php${PHP_VERSION}-imagick php-intl php-mbstring php-mysql php-xml php-zip libmagickcore-6.q16-6-extra
 
 # configure nginx
 echo "--------------------------------------------------"
@@ -102,7 +104,6 @@ else
 	IP="$DOMAIN_FQDN"
 fi
 sed -i "s/IP_PLACEHOLDER/$IP/g" /etc/nginx/sites-enabled/nextcloud.conf
-PHP_VERSION=$(php -r 'echo PHP_MAJOR_VERSION; echo "."; echo PHP_MINOR_VERSION;')
 sed -i "s/\[PHP_PLACEHOLDER\]/$PHP_VERSION/g" /etc/nginx/sites-enabled/nextcloud.conf
 
 # configure mariadb user and database
