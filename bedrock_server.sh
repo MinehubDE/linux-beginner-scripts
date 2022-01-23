@@ -40,9 +40,8 @@ echo -e "\n---------------------------------------------------------------------
 
 echo -e "What Software should the server run on?\n"
 echo "[1] POCKETMINE (PHP)"
-echo "[2] ALTAY (PHP)"
-echo "[3] NUKKIT (Java)"
-echo "[4] BEDROCK (Official Bedrock Edition of Mojang)"
+echo "[2] NUKKIT (Java)"
+echo "[3] BEDROCK (Official Bedrock Edition of Mojang)"
 
 CASE=1
 while [ $CASE -ne 0 ]; do
@@ -54,16 +53,11 @@ while [ $CASE -ne 0 ]; do
 		CASE=0
 		;;
 		2)
-		TYPE="altay"
-		EXTRA_DEPENDENCIES="PHP"
-		CASE=0
-		;;
-		3)
 		TYPE="nukkit"
 		EXTRA_DEPENDENCIES="JAVA"
 		CASE=0
 		;;
-		4)
+		3)
 		TYPE="bedrock"
 		EXTRA_DEPENDENCIES="BULLSHIT"
 		CASE=0
@@ -134,21 +128,6 @@ case $TYPE in
 	pocketmine)
 		rm -f /home/"$USERNAME"/*.phar
 		wget -q https://jenkins.pmmp.io/job/PocketMine-MP/lastSuccessfulBuild/artifact/PocketMine-MP.phar -O /home/"$USERNAME"/"$TYPE".phar
-		cat > /home/"$USERNAME"/start.sh << EOF
-#!/bin/bash
-
-screen -S mcpocket php $TYPE.phar
-
-EOF
-	;;
-	altay)
-		rm -f /home/"$USERNAME"/*.phar
-		apt-get install -y unzip
-		wget -q https://altay.minehub.de/job/Altay/lastSuccessfulBuild/artifact/plugins/Altay/*zip*/Altay.zip -O /tmp/altay.zip
-		unzip -qq -o /tmp/altay.zip -d /tmp/altay
-		mv /tmp/altay/Altay/Altay*.phar /home/"$USERNAME"/"$TYPE".phar
-		wget -q https://raw.githubusercontent.com/TuranicTeam/Altay/master/resources/pocketmine.yml -O /home/"$USERNAME"/pocketmine.yml
-		sed -i "s/enable-dev-builds: false/enable-dev-builds: true/g" /home/"$USERNAME"/pocketmine.yml
 		cat > /home/"$USERNAME"/start.sh << EOF
 #!/bin/bash
 
