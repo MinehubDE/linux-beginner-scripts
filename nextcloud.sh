@@ -165,8 +165,8 @@ echo "--------------------------------------------------"
 echo "--------------------------------------------------"
 echo -e "--------------------------------------------------\n"
 
-echo "Please save the following credentials. They are currently nowhere stored and will be lost once this screen disappears."
-echo "The following credentials are also stored in a file: $HOME/nextlcoud.credentials"
+echo "Below you will find the credentials used to connect to your Nextcloud instance."
+echo "The credentials are also stored in a file: $HOME/nextlcoud.credentials"
 
 echo -e "\n--------------------------------------------------\n"
 echo "DATABASE USER: nextcloud"
