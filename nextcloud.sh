@@ -31,7 +31,7 @@ fi
 echo "--------------------------------------------------"
 echo "Installing prerequisites"
 echo "--------------------------------------------------"
-apt-get update && apt-get install -y bzip2 host mariadb-server nginx-light pwgen openssl sudo
+apt-get update && apt-get install -y bzip2 host mariadb-server nginx-light pwgen openssl sudo wget
 
 # generate certs
 echo "--------------------------------------------------"
@@ -86,9 +86,11 @@ wget -q -O - https://packages.sury.org/php/apt.gpg | apt-key add -
 OS_VERSION=$(cat /etc/*-release | grep VERSION_CODENAME | sed 's/.*=//')
 echo "deb https://packages.sury.org/php/ $OS_VERSION main" > /etc/apt/sources.list.d/php.list
 apt-get update
-apt-get -y install php-fpm
+# Force PHP 8 from website
+TEMP_PHP_VERS=$(curl -s https://docs.nextcloud.com/server/latest/admin_manual/installation/source_installation.html | grep PHP | grep recommended | grep strong | sed 's/.*<strong>//g' | sed 's/<\/strong>.*//g')
+apt-get -y install php${TEMP_PHP_VERS}-fpm
 PHP_VERSION=$(php -r 'echo PHP_MAJOR_VERSION; echo "."; echo PHP_MINOR_VERSION;')
-apt-get install -y php${PHP_VERSION}-apcu php-bcmath php-curl php-gd php-gmp php${PHP_VERSION}-imagick php-intl php-mbstring php-mysql php-xml php-zip libmagickcore-6.q16-6-extra
+apt-get install -y php${PHP_VERSION}-apcu php${PHP_VERSION}-bcmath php${PHP_VERSION}-curl php${PHP_VERSION}-gd php${PHP_VERSION}-gmp php${PHP_VERSION}-imagick php${PHP_VERSION}-intl php${PHP_VERSION}-mbstring php${PHP_VERSION}-mysql php${PHP_VERSION}-xml php${PHP_VERSION}-zip libmagickcore-6.q16-6-extra
 
 # configure nginx
 echo "--------------------------------------------------"
